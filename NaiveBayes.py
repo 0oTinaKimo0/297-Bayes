@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn.naive_bayes import GaussianNB
 from sklearn import model_selection
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 
 # Load the adult income data from the csv file using pandas
@@ -19,6 +20,7 @@ data['sex'].replace(' Female', 0, inplace=True)
 data['sex'].replace(' Male', 1, inplace=True)
 Y = data['income']
 X = data[numerical]
+print('Using features: ' + str(numerical))
 
 # Define the Naive Bayes model
 naiveBayesModel = GaussianNB()
