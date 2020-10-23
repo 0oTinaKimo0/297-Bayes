@@ -29,7 +29,7 @@ plt.show()
 plt.hist(data['occu'])
 plt.title('Occupation distribution')
 plt.show()
-print(data['country'].describe())
+print(data['work'].value_counts())
 
 # Describe the distribution of the target classes
 print(data['income'].describe())

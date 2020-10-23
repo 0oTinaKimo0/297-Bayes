@@ -10,7 +10,7 @@ from sklearn.metrics import confusion_matrix
 data = pd.read_csv('adult.csv', header=None)
 data.columns = ['age', 'work', 'fnlwgt', 'edu', 'edunum', 'marital', 'occu', 'relation', 'race', 'sex', 'gain', 'loss', 'hpw', 'country', 'income']
 features_raw = ['age', 'work', 'fnlwgt', 'edunum', 'marital', 'occu', 'relation', 'race', 'sex', 'gain', 'loss', 'hpw', 'country']
-features = ['age', 'fnlwgt', 'edunum', 'marital', 'relation', 'sex', 'gain', 'loss', 'hpw', 'country']
+data['work'].replace(' Without-pay', ' ?', inplace=True)
 data.replace(' ?', np.NaN, inplace=True)
 data.dropna(inplace=True)
 
@@ -21,11 +21,31 @@ data['sex'].replace(' Female', 0, inplace=True)
 data['sex'].replace(' Male', 1, inplace=True)
 data['country'].replace(' United-States', 1, inplace=True)
 data['country'].where(data['country'] == 1, 0, inplace=True)
-data['marital'].replace(dict.fromkeys([' Married-AF-spouse', ' Married-civ-spouse', ' Married-spouse-absent'], 1), inplace=True)
+data['marital'].replace(dict.fromkeys([' Married-AF-spouse', ' Married-civ-spouse'], 1), inplace=True)
 data['marital'].where(data['marital'] == 1, 0, inplace=True)
 data['relation'].replace(' Own-child', 1, inplace=True)
 data['relation'].where(data['relation'] == 1, 0, inplace=True)
+data['work'].replace(dict.fromkeys([' Self-emp-not-inc', ' Self-emp-inc'], ' Self-emp'), inplace=True)
+data['work'].replace(dict.fromkeys([' Local-gov', ' State-gov', ' Federal-gov'], ' Government'), inplace=True)
+reorder_colnames = ['income', 'age', 'fnlwgt', 'edu', 'edunum', 'marital', 'occu', 'relation', 'race', 'sex', 'gain', 'loss', 'hpw', 'country', 'work']
+data = data.reindex(columns=reorder_colnames)
+data = pd.get_dummies(data, columns=['work'])
+reorder_colnames = ['income', 'age', 'fnlwgt', 'edu', 'edunum', 'marital', 'relation', 'race', 'sex', 'gain', 'loss', 'hpw', 'country',
+                    'work_ Private','work_ Self-emp','work_ Government', 'occu']
+data = data.reindex(columns=reorder_colnames)
+data = pd.get_dummies(data, columns=['occu'])
+reorder_colnames = ['income', 'age', 'fnlwgt', 'edu', 'edunum', 'marital', 'relation', 'race', 'sex', 'gain', 'loss', 'hpw', 'country',
+                    'work_ Private','work_ Self-emp','work_ Government', 'occu_ Adm-clerical', 'occu_ Armed-Forces', 'occu_ Craft-repair', 'occu_ Exec-managerial', 'occu_ Farming-fishing', 'occu_ Handlers-cleaners',
+            'occu_ Machine-op-inspct', 'occu_ Other-service', 'occu_ Priv-house-serv', 'occu_ Prof-specialty', 'occu_ Protective-serv', 'occu_ Sales',
+            'occu_ Tech-support', 'occu_ Transport-moving']
+data = data.reindex(columns=reorder_colnames)
+data = pd.get_dummies(data, columns=['race'])
+print(list(data.columns))
 
+features = ['age', 'fnlwgt', 'work_ Private','work_ Self-emp','work_ Government', 'edunum', 'marital', 'relation', 'sex', 'gain', 'loss', 'hpw', 'country',
+            'occu_ Adm-clerical', 'occu_ Armed-Forces', 'occu_ Craft-repair', 'occu_ Exec-managerial', 'occu_ Farming-fishing', 'occu_ Handlers-cleaners',
+            'occu_ Machine-op-inspct', 'occu_ Other-service', 'occu_ Priv-house-serv', 'occu_ Prof-specialty', 'occu_ Protective-serv', 'occu_ Sales',
+            'occu_ Tech-support', 'occu_ Transport-moving', 'race_ Amer-Indian-Eskimo', 'race_ Asian-Pac-Islander', 'race_ Black', 'race_ Other', 'race_ White']
 Y = data['income']
 X = data[features]
 print('Using features: ' + str(features))
