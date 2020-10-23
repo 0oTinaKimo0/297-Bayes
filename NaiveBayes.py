@@ -8,8 +8,8 @@ from sklearn.metrics import confusion_matrix
 
 # Load the adult income data from the csv file using pandas
 data = pd.read_csv('adult.csv', header=None)
-data.columns = ['age', 'class', 'fnlwgt', 'edu', 'edunum', 'marital', 'occu', 'relation', 'race', 'sex', 'gain', 'loss', 'hpw', 'country', 'income']
-features = ['age', 'class', 'fnlwgt', 'edunum', 'marital', 'occu', 'relation', 'race', 'sex', 'gain', 'loss', 'hpw', 'country']
+data.columns = ['age', 'work', 'fnlwgt', 'edu', 'edunum', 'marital', 'occu', 'relation', 'race', 'sex', 'gain', 'loss', 'hpw', 'country', 'income']
+features = ['age', 'work', 'fnlwgt', 'edunum', 'marital', 'occu', 'relation', 'race', 'sex', 'gain', 'loss', 'hpw', 'country']
 numerical = ['age', 'fnlwgt', 'edunum', 'gain', 'loss', 'hpw']
 data.replace(' ?', np.NaN, inplace=True)
 data.dropna(inplace=True)
