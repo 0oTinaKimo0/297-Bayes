@@ -26,3 +26,5 @@ Finally for the EDA, we describe the distribution of the target variable. We see
 ![](/images/Income.png)
 
 ### Naive Bayes Models
+
+![](/images/AccuracyandPrecision.png)
