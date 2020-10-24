@@ -50,31 +50,69 @@ Y = data['income']
 X = data[features]
 print('Using features: ' + str(features))
 
-# Define the Naive Bayes model - Gaussian
-naiveBayesModel = GaussianNB()
+# Define the Naive Bayes models
+gaussianModel = GaussianNB()
+bernoulliModel = BernoulliNB()
+multinomialModel = MultinomialNB()
+complementModel = ComplementNB()
 
 # Split training and testing data
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, stratify=Y)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
 # Test options and evaluation metric
 scoring = 'accuracy'
 
-# Fit the training set
-naiveBayesModel.fit(X_train, Y_train)
+# Fit the training sets
+gaussianModel.fit(X_train, y_train)
+bernoulliModel.fit(X_train, y_train)
+multinomialModel.fit(X_train, y_train)
+complementModel.fit(X_train, y_train)
 
-# Predict for the test set
-pred_naiveBayesModel = naiveBayesModel.predict(X_test)
+# Predict for the test sets
+predG = gaussianModel.predict(X_test)
+predB = bernoulliModel.predict(X_test)
+predM = multinomialModel.predict(X_test)
+predC = complementModel.predict(X_test)
 
 # Get metrics for this specific split of train-test data
-print(classification_report(Y_test, pred_naiveBayesModel))
-print(confusion_matrix(Y_test, pred_naiveBayesModel))
+accuracies = [accuracy_score(y_test, predG),
+              accuracy_score(y_test, predB),
+              accuracy_score(y_test, predB),
+              accuracy_score(y_test, predC)]
+
+precisions = [precision_score(y_test, predG),
+              precision_score(y_test, predB),
+              precision_score(y_test, predM),
+              precision_score(y_test, predC)]
+
+models = ["Gaussian",
+          "Bernoulli",
+          "Multinominal",
+          "Complement"]
+
+fig, axs = plt.subplots(ncols = 1, nrows = 2)
+axs[0].bar(models, accuracies)
+axs[0].set_ylabel("Accuracies")
+axs[1].bar(models, precisions)
+axs[1].set_ylabel("Precisions")
+axs[1].set_xlabel("Model")
+plt.show()
+
+print("Gaussian Model accuracy: " + str(accuracy_score(y_test, predG)))
+print("Gaussian Model precision: " + str(precision_score(y_test, predG)))
+print("Bernoulli Model accuracy: " + str(accuracy_score(y_test, predB)))
+print("Bernoulli Model precision: " + str(precision_score(y_test, predB)))
+print("Multinominal Model accuracy: " + str(accuracy_score(y_test,predM)))
+print("Multinominal Model precision: " + str(precision_score(y_test, predM)))
+print("Complement Model accuracy: " + str(accuracy_score(y_test, predC)))
+print("Complement Model precision: " + str(precision_score(y_test, predC)))
 
 # Model Performance
 # Set performance parameters
 kfold = model_selection.KFold(n_splits=10)
 
 # Call the cross validation function
-cv_results = model_selection.cross_val_score(GaussianNB(), X_train, Y_train, cv=kfold, scoring=scoring)
+cv_results = model_selection.cross_val_score(GaussianNB(), X_train, y_train, cv=kfold, scoring=scoring)
 
 # Display the mean and standard deviation of the prediction
 print("%s: %f %s: (%f)" % ('Naive Bayes accuracy', cv_results.mean(), '\nNaive Bayes StdDev', cv_results.std()))
