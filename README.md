@@ -27,4 +27,4 @@ Finally for the EDA, we describe the distribution of the target variable. We see
 
 ### Naive Bayes Models
 
-![](/images/Accuracy and Precision.png)
+![](images/Accuracy and Precision.png)
