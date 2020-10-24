@@ -1,10 +1,11 @@
 import numpy as np 
 import pandas as pd 
-from sklearn.naive_bayes import GaussianNB
+import sklearn.naive_bayes as nb
 from sklearn import model_selection
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import precision_score
+import matplotlib.pyplot as plt
 
 # Load the adult income data from the csv file using pandas
 data = pd.read_csv('adult.csv', header=None)
@@ -40,21 +41,20 @@ reorder_colnames = ['income', 'age', 'fnlwgt', 'edu', 'edunum', 'marital', 'rela
             'occu_ Tech-support', 'occu_ Transport-moving']
 data = data.reindex(columns=reorder_colnames)
 data = pd.get_dummies(data, columns=['race'])
-print(list(data.columns))
 
 features = ['age', 'fnlwgt', 'work_ Private','work_ Self-emp','work_ Government', 'edunum', 'marital', 'relation', 'sex', 'gain', 'loss', 'hpw', 'country',
             'occu_ Adm-clerical', 'occu_ Armed-Forces', 'occu_ Craft-repair', 'occu_ Exec-managerial', 'occu_ Farming-fishing', 'occu_ Handlers-cleaners',
             'occu_ Machine-op-inspct', 'occu_ Other-service', 'occu_ Priv-house-serv', 'occu_ Prof-specialty', 'occu_ Protective-serv', 'occu_ Sales',
             'occu_ Tech-support', 'occu_ Transport-moving', 'race_ Amer-Indian-Eskimo', 'race_ Asian-Pac-Islander', 'race_ Black', 'race_ Other', 'race_ White']
-Y = data['income']
+y = data['income']
 X = data[features]
 print('Using features: ' + str(features))
 
 # Define the Naive Bayes models
-gaussianModel = GaussianNB()
-bernoulliModel = BernoulliNB()
-multinomialModel = MultinomialNB()
-complementModel = ComplementNB()
+gaussianModel = nb.GaussianNB()
+bernoulliModel = nb.BernoulliNB()
+multinomialModel = nb.MultinomialNB()
+complementModel = nb.ComplementNB()
 
 # Split training and testing data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
@@ -112,9 +112,9 @@ print("Complement Model precision: " + str(precision_score(y_test, predC)))
 kfold = model_selection.KFold(n_splits=10)
 
 # Call the cross validation function
-cv_results = model_selection.cross_val_score(GaussianNB(), X_train, y_train, cv=kfold, scoring=scoring)
+cv_results = model_selection.cross_val_score(nb.GaussianNB(), X_train, y_train, cv=kfold, scoring=scoring)
 
 # Display the mean and standard deviation of the prediction
-print("%s: %f %s: (%f)" % ('Naive Bayes accuracy', cv_results.mean(), '\nNaive Bayes StdDev', cv_results.std()))
+print("%s: %f %s: (%f)" % ('Naive Bayes accuracy - cross validation', cv_results.mean(), '\nNaive Bayes StdDev - cross validation', cv_results.std()))
 
 
