@@ -21,7 +21,7 @@ We decide to keep the race and sex information to avoid bias. We transform the r
 
 ![](/images/Country.png)
 
-Finally for the EDA, we describe the distribution of the target variable. We see that there are far more instances of income <=50k than income >50k, so this imbalance could impact our model’s precision. One thing we do to alleviate this effect is to stratify the data during train-test split, so the target classes distribution is consistent between training and testing data.
+Finally for the EDA, we describe the distribution of the target variable. We see that there are far more instances of income <=50k than income >50k, so this imbalance could impact our model’s precision. One thing we do to alleviate this effect is to stratify the data by y during train-test split, so the target classes distribution is consistent between training and testing data.
 
 ![](/images/Income.png)
 
@@ -29,4 +29,4 @@ Finally for the EDA, we describe the distribution of the target variable. We see
 For our Naive Bayes model, we found it valuable to implement Gaussian, Bernoulli, Multinominal, and Complement models to compare accuracy and precision. After fitting the training data, we predicted the x_test values for each model. With these predictions we calculated the accuracy and precision for each of the four models and presented them in the plot seen below. 
 ![](/images/plot.png)
 ![](/images/results.png)
-We originally split the data 80/20, but then switched to stratifying the data by y so that the target classes would be consistently distributed. Becuase of this switch, our accuracy and precision for the Gaussian model increased, making it the best distrubution to use on our Naive Bayes model. Although the Bernoulli model had the highest accuracy of 79.6%, it had a low 51.8% precision. The Gaussian model resulted in 78.8% accuracy with 66.2% precision. Because of the low precision in the Bernoulli model we decided that the Gaussian model would be best to use for this data. 
+We originally split the data 80/20, but then switched to stratifying the data by y so that the target classes would be consistently distributed. Because of this switch, our accuracy and precision for the Gaussian model increased, making it the best distrubution to use on our Naive Bayes model. Although the Bernoulli model had the highest accuracy of 79.6%, it had a low 51.8% precision. The Gaussian model resulted in 78.8% accuracy with 66.2% precision. Because of the low precision in the Bernoulli model we decided that the Gaussian model would be best to use for this data. 
